@@ -72,14 +72,14 @@ class ImageUtils {
     static def grayScaleAverage(def image) {
         def rgbBuff = image.getRGB(0, 0, image.getWidth(),
                 image.getHeight(), null, 0, image.getWidth())
-        def tempBuff = []
+        int[] tempBuff = new int[image.getHeight() * image.getWidth()]
 
-        rgbBuff.each { i ->
-            Color pixel = new Color(it[i])
+        rgbBuff.eachWithIndex { it, i ->
+            Color pixel = new Color(it.next())
             def red = pixel.getRed()
             def green = pixel.getGreen()
             def blue = pixel.getBlue()
-            tempBuff[i] = (red + green + blue) / 3 //the average for the pixel
+            tempBuff[i] = ((red + green + blue) / 3) //the average for the pixel
         }
         return toImage(int2byte(tempBuff))
     }
