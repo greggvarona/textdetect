@@ -12,6 +12,8 @@ package org.sanwrit.tdect.io
 import javax.imageio.ImageIO
 import java.awt.Color
 import java.awt.image.BufferedImage
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -21,7 +23,7 @@ import java.util.regex.Pattern
  */
 class ImageUtils {
 
-    private static final String EXTENSION_PATTERN = "([^\\s]+(\\.(?i)" +
+    private static final String EXTENSION_PATTERN = "([\\s\\S]+(\\.(?i)" +
             "(jpg|png|gif|bmp))\$)"
 
     /**
@@ -35,7 +37,7 @@ class ImageUtils {
         if (validateExtension(pathToFile)) {
             file = new File(pathToFile)
         }
-        
+
         return (pathToFile != null && !file.isDirectory()) ? ImageIO.read(file)
                 : null
     }
@@ -59,7 +61,7 @@ class ImageUtils {
     static def validateExtension(String pathToFile) {
         Pattern pattern = Pattern.compile(EXTENSION_PATTERN)
         Matcher matcher = pattern.matcher(pathToFile)
-	    return matcher.matches()
+        return matcher.matches()
     }
 
     /**
@@ -72,29 +74,30 @@ class ImageUtils {
     static def grayScaleAverage(def image) {
         def rgbBuff = image.getRGB(0, 0, image.getWidth(),
                 image.getHeight(), null, 0, image.getWidth())
-        int[] tempBuff = new int[image.getHeight() * image.getWidth()]
+        def tempBuff = new int[image.getHeight() * image.getWidth()]
 
         rgbBuff.eachWithIndex { it, i ->
-            Color pixel = new Color(it.next())
+            def pixel = new Color(it.next())
+            def alpha = pixel.getAlpha()
             def red = pixel.getRed()
             def green = pixel.getGreen()
             def blue = pixel.getBlue()
-            tempBuff[i] = ((red + green + blue) / 3) //the average for the pixel
+            def average = ((red + green + blue) / 3) as int //the average for the pixel
+            def color = new Color(average, average, average, alpha)
+            tempBuff[i] = color.getRGB()
         }
-        return toImage(int2byte(tempBuff))
+        return toImage(tempBuff, image.getWidth(), image.getHeight())
     }
 
-    private def static int2byte(int[]src) {
-        int srcLength = src.length
-        byte[]dst = new byte[srcLength << 2]
-
-        for (int i=0; i<srcLength; i++) {
-            int x = src[i]
-            int j = i << 2
-            dst[j++] = (byte) ((x >>> 0) & 0xff)
-            dst[j++] = (byte) ((x >>> 8) & 0xff)
-            dst[j++] = (byte) ((x >>> 16) & 0xff)
-            dst[j++] = (byte) ((x >>> 24) & 0xff)
+    private def static int2byte(int[] src) {
+        byte[] dst = new byte[src.length * 4]
+        int j = 0
+        for (i in 0..src.length - 1) {
+            int a = src[i]
+            dst[j++] = (byte) ((a >> 24) & 0xFF)
+            dst[j++] = (byte) ((a >> 16) & 0xFF)
+            dst[j++] = (byte) ((a >> 8) & 0xFF)
+            dst[j++] = (byte) (a & 0xFF)
         }
         return dst
     }
@@ -104,12 +107,12 @@ class ImageUtils {
      * @param data
      * @return
      */
-   static def toImage(byte[] data) {
-        BufferedImage bi = null
-        ByteArrayInputStream bais = new ByteArrayInputStream(data)
-        bi = ImageIO.read(bais)
-        return bi
-   }
+    static def toImage(int[] data, int width, int height) {
+        def newImage = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_RGB)
+        newImage.setRGB(0, 0, width, height, data, 0, width)
+        return newImage
+    }
 
 
 }
