@@ -15,9 +15,9 @@ package org.sanwrit.tdect.io
 class ImageUtilsTest extends GroovyTestCase {
     
     void testGetImage() {
-
-        File inputDir = new File(this.getClass().getResource("in").getPath() + File.separator)
-
+        String path = URLDecoder.decode(this.getClass().getResource("in").getPath()
+                + File.separator, "UTF-8")
+        File inputDir = new File(path)
         assertTrue inputDir.isDirectory()
 
         def images = []
@@ -29,26 +29,6 @@ class ImageUtilsTest extends GroovyTestCase {
         assertTrue images.size() > 0
     }
 
-    void testGrayScaleAverage() {
-        File inputDir = new File(this.getClass().getResource("in").getPath()
-                + File.separator)
-
-        assertTrue inputDir.isDirectory()
-
-        def images = []
-        for (file in inputDir.listFiles()) {
-            images.add(ImageUtils.readImage(file.getAbsoluteFile()
-                    .getAbsolutePath()))
-        }
-
-        assertTrue images.size() > 0
-
-        images.each { it ->
-            def img = ImageUtils.grayScaleAverage(it)
-            File newFile = new File(inputDir.getAbsolutePath() + "/temp.png")
-            assertTrue ImageUtils.writeImage(it, "PNG", newFile)
-        }
-    }
 }
 
 
