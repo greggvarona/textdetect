@@ -11,6 +11,11 @@ class GrayScaleFilterTest extends GroovyTestCase {
         String path = URLDecoder.decode(this.getClass()
                 .getResource("/org/sanwrit/tdect/io/in").getPath()
                 + File.separator, "UTF-8")
+
+        String outPath = URLDecoder.decode(this.getClass()
+                .getResource("/org/sanwrit/tdect/io/out").getPath()
+                + File.separator, "UTF-8")
+
         File inputDir = new File(path)
 
         assertTrue inputDir.isDirectory()
@@ -35,7 +40,9 @@ class GrayScaleFilterTest extends GroovyTestCase {
             def img = ImageUtils.toImage(data, it.getWidth(), it.getHeight())
 
             //store
-            File newFile = new File(inputDir.getAbsolutePath() + "/temp.png")
+            File outputDir = new File(outPath)
+            File newFile = new File(outputDir.getAbsolutePath()
+                    + "/temp${ new Date().getTime() }.png".toString())
             assertTrue ImageUtils.writeImage(img, "PNG", newFile)
         }
     }

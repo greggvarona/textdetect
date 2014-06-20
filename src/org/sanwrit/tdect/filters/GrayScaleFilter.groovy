@@ -9,9 +9,7 @@ import java.awt.Color
 /**
  * Applies gray scaling algorithms to integer pixels.
  */
-class GrayScaleFilter {
-
-    int[] img
+class GrayScaleFilter extends Filter {
 
     /**
      * Loads raw int pixel data to the filter.
@@ -20,7 +18,7 @@ class GrayScaleFilter {
      * @param height
      */
     GrayScaleFilter(int[] img) {
-        this.img = img
+        super(img)
     }
 
 
@@ -47,8 +45,7 @@ class GrayScaleFilter {
             //the average for the pixel
             def average = ((red + green + blue) / 3) as int
 
-            def color = new Color(average, average, average, alpha)
-            tempBuff[i] = color.getRGB()
+            tempBuff[i] = new Color(average, average, average, alpha).getRGB()
         }
 
         return tempBuff
