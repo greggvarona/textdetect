@@ -38,26 +38,25 @@ class IsolateColorFilter extends Filter {
     }
 
     /**
-     * <p>Changes all other colors to background if the color is not equal to
+     * <p>Changes all other pixels to the {@code cover} that is not equal to
      * the specified color.</p>
      *
-     * @param background
-     * @param color
-     * @param threshold - mostly used for gray scaled images. Adjust this to
-     * a suitable amount if you need thresholding.
+     * @param cover - the color that covers the unwanted pixels.
+     * @param color - color that will remain after this filter is applied.
+     * @param threshold - used for gray scaled images. Adjust this to
+     * a suitable amount if you need thresholding. Set to zero to disable
+     * thresholding.
      * @return
      */
-    def apply(def background = DEFAULT_BACKGROUND, def color = DEFAULT_COLOR,
-              def threshold = DEFAULT_THRESHOLD) {
+    void apply(def threshold, def cover = DEFAULT_BACKGROUND,
+               def color = DEFAULT_COLOR) {
 
-        int[] tempBuff = new int[this.getImg().length]
-        Color b = new Color(background)
+        Color b = new Color(cover)
         Color c = new Color(color)
 
-        img.eachWithIndex { it, i ->
-            Color pixel = new Color(it.next())
-            tempBuff[i] = pixel.getRGB()
+        for (i in 0..this.img.length - 1) {
 
+            Color pixel = new Color(this.img[i])
             // These calculations are used for comparing with the threshold
             // value.
             def pixelAvg = (pixel.getRed() + pixel.getBlue()
@@ -66,12 +65,11 @@ class IsolateColorFilter extends Filter {
 
             // Not the color that we need.
             if (Math.abs(pixelAvg - cAvg) >= threshold) {
-                tempBuff[i] = b.getRGB()
+                this.img[i] = b.getRGB()
             }
 
         }
 
-        return tempBuff
     }
 
 

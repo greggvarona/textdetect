@@ -30,13 +30,10 @@ class GrayScaleFilter extends Filter {
      * <p>The original raw data is not changed.</p>
      *
      * @param image
-     * @return int array
      */
-    def average() {
-        def tempBuff = new int[this.img.length]
-
-        this.img.eachWithIndex { it, i ->
-            def pixel = new Color(it.next())
+    void average() {
+        for (i in 0..this.img.length - 1) {
+            def pixel = new Color(this.img[i])
             def alpha = pixel.getAlpha()
             def red = pixel.getRed()
             def green = pixel.getGreen()
@@ -45,10 +42,24 @@ class GrayScaleFilter extends Filter {
             //the average for the pixel
             def average = ((red + green + blue) / 3) as int
 
-            tempBuff[i] = new Color(average, average, average, alpha).getRGB()
+            this.img[i] = new Color(average, average, average, alpha).getRGB()
         }
+    }
 
-        return tempBuff
+    def imageIsGrayScale() {
+        def flag = true
+        for (intPixel in this.img) {
+            def pixel = new Color(intPixel)
+            def red = pixel.getRed()
+            def green = pixel.getGreen()
+            def blue = pixel.getBlue()
+
+            if (red != green || red != blue) {
+                flag = false
+                break
+            }
+        }
+        return flag
     }
 
 }

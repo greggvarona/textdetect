@@ -15,8 +15,9 @@ package org.sanwrit.tdect.io
 class ImageUtilsTest extends GroovyTestCase {
     
     void testGetImage() {
-        String path = URLDecoder.decode(this.getClass().getResource("in")
-                .getPath() + File.separator, "UTF-8")
+        String path = URLDecoder.decode(this.getClass()
+                .getResource("/org/sanwrit/tdect/io/in/gsf").getPath()
+                + File.separator, "UTF-8")
         File inputDir = new File(path)
         assertTrue inputDir.isDirectory()
 

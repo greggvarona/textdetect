@@ -1,15 +1,16 @@
+/**
+ * Created by greggvarona on 6/23/14.
+ */
 package org.sanwrit.tdect.filters
 
 import org.sanwrit.tdect.io.ImageUtils
 
-/**
- * Created by greggvarona on 6/20/14.
- */
-class GrayScaleFilterTest extends GroovyTestCase {
 
-    void testGrayScaleAverage() {
+class IsolateColorFilterTest extends GroovyTestCase {
+
+    void testIsolation() {
         String path = URLDecoder.decode(this.getClass()
-                .getResource("/org/sanwrit/tdect/io/in/gsf").getPath()
+                .getResource("/org/sanwrit/tdect/io/in/icf").getPath()
                 + File.separator, "UTF-8")
 
         String outPath = URLDecoder.decode(this.getClass()
@@ -33,11 +34,9 @@ class GrayScaleFilterTest extends GroovyTestCase {
                     it.getHeight(), null, 0, it.getWidth())
 
             //apply filter
-            GrayScaleFilter filter = new GrayScaleFilter(data)
-            filter.average()
+            IsolateColorFilter filter = new IsolateColorFilter(data)
+            filter.apply(90)
             data = filter.getImg()
-
-            assertTrue filter.imageIsGrayScale()
 
             //convert to BufferedImage
             def img = ImageUtils.toImage(data, it.getWidth(), it.getHeight())
@@ -45,7 +44,7 @@ class GrayScaleFilterTest extends GroovyTestCase {
             //store
             File outputDir = new File(outPath)
             File newFile = new File(outputDir.getAbsolutePath()
-                    + "/gsf${ new Date().getTime() }.png".toString())
+                    + "/icf${ new Date().getTime() }.png".toString())
             assertTrue ImageUtils.writeImage(img, "PNG", newFile)
         }
     }
