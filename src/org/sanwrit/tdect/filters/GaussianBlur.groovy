@@ -3,6 +3,7 @@
  */
 package org.sanwrit.tdect.filters
 
+import org.sanwrit.tdect.filters.util.Convolution
 import org.sanwrit.tdect.io.ImageUtils
 
 /**
@@ -134,8 +135,22 @@ class GaussianBlur extends Filter {
      *     http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution</a>
      * @return
      */
+    def blur() {
+        def mw = this.radius * 2 + 1 //width of the kernel/matrix
+        Convolution.convolve(this.img, width, height, this.matrix, mw, mw)
+    }
+
+    /**
+     * Blurs the image by multiply each kernel(matrix) value to the
+     * corresponding input pixels and assign the sum of the products to the
+     * output pixel. With this, the output pixel becomes the average of its
+     * surrounding pixels.
+     *
+     * @see <a href="http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution">
+     *     http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution</a>
+     * @return
+     */
     def convolve() {
-        int accumulator = 0
         int[] output = new int[this.img.length]
         int matrixWidth = this.radius * 2 + 1
 

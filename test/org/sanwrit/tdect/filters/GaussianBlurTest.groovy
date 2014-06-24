@@ -112,7 +112,7 @@ class GaussianBlurTest extends GroovyTestCase {
         GaussianBlur filter = new GaussianBlur(grayscale.getImg(), imgWidth,
                 imgHeight, 2, 1.4)
         filter.buildMatrix()
-        int[] output = filter.convolve()
+        int[] output = filter.blur()
 
         assertTrue output.length != null
 
