@@ -76,6 +76,21 @@ class ImageUtils {
         return newImage
     }
 
+    /**
+     * Limit {@code i} from 0 to 255.
+     * @param i the integer to clamp (e.g. one R, G, and B values).
+     * @return an integer whose value is between 0 and 255, inclusively.
+     */
+    static def clampRGBValue(int i) {
+        int retVal = i
+        if (i < 0) {
+            retVal = 0
+        } else if (i > 255) {
+            retVal = 255
+        }
+        return retVal
+    }
+
 
 }
 
