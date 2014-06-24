@@ -75,4 +75,54 @@ class GaussianBlurTest extends GroovyTestCase {
                 + "/gbf${ new Date().getTime() }.png".toString())
         assertTrue ImageUtils.writeImage(img, "PNG", newFile)
     }
+
+    /**
+     * @see <a href="http://en.wikipedia.org/wiki/Canny_edge_detector#mediaviewer/File:Valve_gaussian_%282%29.PNG">
+     *     http://en.wikipedia.org/wiki/Canny_edge_detector#mediaviewer/File:Valve_gaussian_%282%29.PNG</a>
+     * @see <a href="http://en.wikipedia.org/wiki/File:Valve_original_%281%29.PNG">Original image</a>
+     */
+    void testConvolve2() {
+        String path = URLDecoder.decode(this.getClass()
+                .getResource("/org/sanwrit/tdect/io/in/gbf/Valve_original.PNG")
+                .getPath() + File.separator, "UTF-8")
+        String outPath = URLDecoder.decode(this.getClass()
+                .getResource("/org/sanwrit/tdect/io/out")
+                .getPath() + File.separator, "UTF-8")
+
+        File file = new File(path)
+
+        assertFalse file.isDirectory()
+
+        def images = []
+        images.add(ImageUtils.readImage(file.getAbsoluteFile()
+                .getAbsolutePath()))
+        def image = images.first()
+
+        assertTrue image != null
+
+        int[] input = image.getRGB(0, 0, image.getWidth(), image.getHeight(),
+                null, 0, image.getWidth())
+        int imgWidth = image.getWidth()
+        int imgHeight = image.getHeight()
+
+        GrayScaleFilter grayscale = new GrayScaleFilter(input)
+        grayscale.average()
+
+        //apply Gaussian blur
+        GaussianBlur filter = new GaussianBlur(grayscale.getImg(), imgWidth,
+                imgHeight, 2, 1.4)
+        filter.buildMatrix()
+        int[] output = filter.convolve()
+
+        assertTrue output.length != null
+
+        //convert to BufferedImage
+        def img = ImageUtils.toImage(output, imgWidth, imgHeight)
+
+        //store
+        File outputDir = new File(outPath)
+        File newFile = new File(outputDir.getAbsolutePath()
+                + "/gbf${ new Date().getTime() }.png".toString())
+        assertTrue ImageUtils.writeImage(img, "PNG", newFile)
+    }
 }
