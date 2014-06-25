@@ -47,9 +47,38 @@ class GrayScaleFilter extends Filter {
             output[i] = new Color(average, average, average, alpha)
                     .getRGB()
         }
+        return output
     }
 
-    def imageIsGrayScale() {
+    /**
+     * <p>Calculates the grayscale pixel through this: 0.21 R + 0.72 G + 0.07 B,
+     * within the bounds of {@code width} and {@code height}.
+     * </p>
+     *
+     * <p>The {@code img} will not be changed after this operation.</p>
+     *
+     * @param image
+     * @return int[] output
+     */
+    def luminosity() {
+        int[] output = new int[this.img.length]
+        for (i in 0..this.img.length - 1) {
+            def pixel = new Color(this.img[i])
+            def alpha = pixel.getAlpha()
+            def red = pixel.getRed()
+            def green = pixel.getGreen()
+            def blue = pixel.getBlue()
+
+            //the average for the pixel
+            def lum = ((red * 0.21) + (green * 0.72) + (blue * 0.07)) as int
+
+            output[i] = new Color(lum, lum, lum, alpha)
+                    .getRGB()
+        }
+        return output
+    }
+
+    def isAverage() {
         def flag = true
         for (intPixel in this.img) {
             def pixel = new Color(intPixel)

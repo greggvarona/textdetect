@@ -62,7 +62,7 @@ class GaussianBlurTest extends GroovyTestCase {
         GaussianBlur filter = new GaussianBlur(input, imgWidth, imgHeight, 3,
                 0.84089642)
         filter.buildMatrix()
-        int[] output = filter.convolve()
+        int[] output = filter.blur()
 
         assertTrue output.length != null
 
@@ -93,10 +93,8 @@ class GaussianBlurTest extends GroovyTestCase {
 
         assertFalse file.isDirectory()
 
-        def images = []
-        images.add(ImageUtils.readImage(file.getAbsoluteFile()
-                .getAbsolutePath()))
-        def image = images.first()
+        def image = ImageUtils.readImage(file.getAbsoluteFile()
+                .getAbsolutePath())
 
         assertTrue image != null
 
@@ -106,11 +104,12 @@ class GaussianBlurTest extends GroovyTestCase {
         int imgHeight = image.getHeight()
 
         GrayScaleFilter grayscale = new GrayScaleFilter(input)
-        grayscale.average()
+        input = grayscale.average()
 
         //apply Gaussian blur
-        GaussianBlur filter = new GaussianBlur(grayscale.getImg(), imgWidth,
-                imgHeight, 2, 1.4)
+        GaussianBlur filter = new GaussianBlur(input, imgWidth, imgHeight,
+                2, 1.4)
+
         filter.buildMatrix()
         int[] output = filter.blur()
 

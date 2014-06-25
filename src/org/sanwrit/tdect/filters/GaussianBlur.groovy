@@ -121,7 +121,7 @@ class GaussianBlur extends Filter {
 
         //normalization
         for (i in 0..this.matrix.length - 1) {
-            this.matrix[i] /= accumulator;
+            this.matrix[i] /= accumulator
         }
     }
 
@@ -140,64 +140,6 @@ class GaussianBlur extends Filter {
     def blur() {
         def mw = this.radius * 2 + 1 //width of the kernel/matrix
         Convolution.convolve(this.img, width, height, this.matrix, mw, mw)
-    }
-
-    /**
-     * <p>Blurs the image by multiply each kernel(matrix) value to the
-     * corresponding input pixels and assign the sum of the products to the
-     * output pixel. With this, the output pixel becomes the average of its
-     * surrounding pixels.</p>
-     *
-     * <p>This does not overwrite the original input ({@code img}).
-     *
-     * @see <a href="http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution">
-     *     http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution</a>
-     * @return
-     */
-    def convolve() {
-        int[] output = new int[this.img.length]
-        int matrixWidth = this.radius * 2 + 1
-
-        for (int row = 0; row < this.height; row++) {
-            for (int col = 0; col < this.width; col++) {
-                //index relative to the matrix's origin
-                int origin = row * this.width + col
-                //set argb to 0 every pass
-                double a = 0 //alpha
-                double r = 0 //red
-                double g = 0 //green
-                double b = 0 //blue
-
-                for (int my = 0; my < matrixWidth; my++) {
-                    for (int mx = 0; mx < matrixWidth; mx++) {
-                        // a lot of coercions here bec. of groovy
-                        int y = (int)(row + my - (int)(matrixWidth/2))
-                        int x = (int)(col + mx - (int)(matrixWidth/2))
-
-                        if ((x >= 0 && y >= 0)) {
-                            if ((x < this.width && y < this.height)) {
-                                int index = y * this.width + x
-                                int mIndex = my * matrixWidth + mx
-                                int rgb = this.img[index];
-                                double f = this.matrix[mIndex]
-
-                                a += f * ((rgb >> 24) & 0xff);
-                                r += f * ((rgb >> 16) & 0xff);
-                                g += f * ((rgb >> 8) & 0xff);
-                                b += f * (rgb & 0xff);
-                            }
-                        }
-                    }
-                }
-
-                output[origin] = (ImageUtils.clampRGBValue((int)(a+0.5))<<24) |
-                        (ImageUtils.clampRGBValue((int)(r+0.5)) << 16) |
-                        (ImageUtils.clampRGBValue((int)(g+0.5)) << 8) |
-                        ImageUtils.clampRGBValue((int)(b+0.5));
-            }
-        }
-
-        return output
     }
 
 }

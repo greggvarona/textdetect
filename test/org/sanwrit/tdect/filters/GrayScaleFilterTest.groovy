@@ -34,10 +34,10 @@ class GrayScaleFilterTest extends GroovyTestCase {
 
             //apply filter
             GrayScaleFilter filter = new GrayScaleFilter(data)
-            filter.average()
-            data = filter.getImg()
+            data = filter.average()
 
-            assertTrue filter.imageIsGrayScale()
+            GrayScaleFilter filter2 = new GrayScaleFilter(data)
+            assertTrue filter2.isAverage()
 
             //convert to BufferedImage
             def img = ImageUtils.toImage(data, it.getWidth(), it.getHeight())

@@ -38,10 +38,10 @@ class Convolution {
                                 int rgb = input[index];
                                 double f = matrix[mIndex]
 
-                                a += f * ((rgb >> 24) & 0xff);
-                                r += f * ((rgb >> 16) & 0xff);
-                                g += f * ((rgb >> 8) & 0xff);
-                                b += f * (rgb & 0xff);
+                                a += f * ((rgb >> 24) & 0xff)
+                                r += f * ((rgb >> 16) & 0xff)
+                                g += f * ((rgb >> 8) & 0xff)
+                                b += f * (rgb & 0xff)
                             }
                         }
                     }
@@ -50,7 +50,7 @@ class Convolution {
                 output[origin] = (ImageUtils.clampRGBValue((int)(a+0.5))<<24) |
                         (ImageUtils.clampRGBValue((int)(r+0.5)) << 16) |
                         (ImageUtils.clampRGBValue((int)(g+0.5)) << 8) |
-                        ImageUtils.clampRGBValue((int)(b+0.5));
+                        ImageUtils.clampRGBValue((int)(b+0.5))
             }
         }
 
@@ -84,10 +84,10 @@ class Convolution {
                                 int rgb = input[index];
                                 double f = matrix[mIndex]
 
-                                a += f * ((rgb >> 24) & 0xff);
-                                r += f * ((rgb >> 16) & 0xff);
-                                g += f * ((rgb >> 8) & 0xff);
-                                b += f * (rgb & 0xff);
+                                a += f * ((rgb >> 24) & 0xff)
+                                r += f * ((rgb >> 16) & 0xff)
+                                g += f * ((rgb >> 8) & 0xff)
+                                b += f * (rgb & 0xff)
                             }
                         }
                     }
@@ -96,7 +96,7 @@ class Convolution {
                 output[origin] = (ImageUtils.clampRGBValue((int)(a+0.5))<<24) |
                         (ImageUtils.clampRGBValue((int)(r+0.5)) << 16) |
                         (ImageUtils.clampRGBValue((int)(g+0.5)) << 8) |
-                        ImageUtils.clampRGBValue((int)(b+0.5));
+                        ImageUtils.clampRGBValue((int)(b+0.5))
             }
         }
 
