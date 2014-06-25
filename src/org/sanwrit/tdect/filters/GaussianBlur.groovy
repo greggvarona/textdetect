@@ -126,10 +126,12 @@ class GaussianBlur extends Filter {
     }
 
     /**
-     * Blurs the image by multiply each kernel(matrix) value to the
+     * <p>Blurs the image by multiply each kernel(matrix) value to the
      * corresponding input pixels and assign the sum of the products to the
      * output pixel. With this, the output pixel becomes the average of its
-     * surrounding pixels.
+     * surrounding pixels.</p>
+     *
+     * <p>This does not overwrite the original input ({@code img}).
      *
      * @see <a href="http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution">
      *     http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution</a>
@@ -141,10 +143,12 @@ class GaussianBlur extends Filter {
     }
 
     /**
-     * Blurs the image by multiply each kernel(matrix) value to the
+     * <p>Blurs the image by multiply each kernel(matrix) value to the
      * corresponding input pixels and assign the sum of the products to the
      * output pixel. With this, the output pixel becomes the average of its
-     * surrounding pixels.
+     * surrounding pixels.</p>
+     *
+     * <p>This does not overwrite the original input ({@code img}).
      *
      * @see <a href="http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution">
      *     http://en.wikipedia.org/wiki/Kernel_%28image_processing%29#Convolution</a>

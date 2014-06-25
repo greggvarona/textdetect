@@ -32,22 +32,22 @@ class Sobel extends Filter {
     /**
      * Gx - horizontal derivative approximations
      */
-    int[] gx
+    double[] gx
 
     /**
      * Gy - vertical derivative approximations
      */
-    int[] gy
+    double[] gy
 
     /**
-     * Gradiant magnitude
+     * Gradient magnitude
      */
-    int[] g
+    double[] g
 
     /**
      * Gradient direction
      */
-    int[] Θ
+    double[] Θ
 
     Sobel(int[] img, int width, int height) {
         super(img)
@@ -63,15 +63,35 @@ class Sobel extends Filter {
         gy = Convolution.convolve(img, width, height, KGY, KGY_WIDTH, KGY_WIDTH)
     }
 
-    int[] calculateGradiantMagnitude() {
+    void calculateGradiantMagnitude() {
         calculateGx()
         calculateGy()
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        this.g = new int[ this.width * this.height ]
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                def index = y * this.width + x
 
+                this.g[index] = Math.hypot(gx[index], gy[index])
             }
         }
-
     }
+
+    void calculateGradientDirection() {
+        calculateGx()
+        calculateGy()
+
+        this.Θ = new int[ this.width * this.height ]
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                def index = y * this.width + x
+
+                this.Θ[index] = Math.atan2(gy[index], gx[index])
+            }
+        }
+    }
+
+
+
+
 }

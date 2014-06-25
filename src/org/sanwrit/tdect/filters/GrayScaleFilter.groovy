@@ -27,11 +27,13 @@ class GrayScaleFilter extends Filter {
      * picture element within the bounds of {@code width} and {@code height}.
      * </p>
      *
-     * <p>The original raw data is not changed.</p>
+     * <p>The {@code img} will not be changed after this operation.</p>
      *
      * @param image
+     * @return int[] output
      */
-    void average() {
+    def average() {
+        int[] output = new int[this.img.length]
         for (i in 0..this.img.length - 1) {
             def pixel = new Color(this.img[i])
             def alpha = pixel.getAlpha()
@@ -42,7 +44,8 @@ class GrayScaleFilter extends Filter {
             //the average for the pixel
             def average = ((red + green + blue) / 3) as int
 
-            this.img[i] = new Color(average, average, average, alpha).getRGB()
+            output[i] = new Color(average, average, average, alpha)
+                    .getRGB()
         }
     }
 
