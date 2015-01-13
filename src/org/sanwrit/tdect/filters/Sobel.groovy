@@ -6,6 +6,8 @@ package org.sanwrit.tdect.filters
 import org.sanwrit.tdect.filters.util.Convolution
 import org.sanwrit.tdect.io.ImageUtils
 
+import java.awt.Color
+
 /**
  * Sobel operator
  */
@@ -73,8 +75,18 @@ class Sobel extends Filter {
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
                 def index = y * this.width + x
+                Color cx = new Color(gx[index])
+                Color cy = new Color(gy[index])
+                long rMag = (long)Math.hypot(cx.getRed(), cy.getRed())
+                long bMag = (long)Math.hypot(cx.getBlue(), cy.getBlue())
+                long gMag = (long)Math.hypot(cx.getGreen(), cy.getGreen())
 
-                this.g[index] = Math.hypot(gx[index], gy[index])
+                rMag = ImageUtils.clampRGBValue((int)rMag)
+                bMag = ImageUtils.clampRGBValue((int)bMag)
+                gMag = ImageUtils.clampRGBValue((int)gMag)
+
+                int mag = new Color((int)rMag, (int)bMag, (int)gMag, 0).getRGB()
+                this.g[index] = mag
             }
         }
     }
