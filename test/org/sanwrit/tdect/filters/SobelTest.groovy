@@ -9,7 +9,7 @@ class SobelTest extends GroovyTestCase {
 
     void testMagnitude() {
         String path = URLDecoder.decode(this.getClass()
-                .getResource("/org/sanwrit/tdect/io/in/OZuBo.png")
+                .getResource("/org/sanwrit/tdect/io/in/Valve_original.PNG")
                 .getPath() + File.separator, "UTF-8")
         String outPath = URLDecoder.decode(this.getClass()
                 .getResource("/org/sanwrit/tdect/io/out")
